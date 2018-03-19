@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/IOT_Responder.iml" filepath="$PROJECT_DIR$/IOT_Responder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Emergency_Responder.iml" filepath="$PROJECT_DIR$/Emergency_Responder.iml" />
+      <module fileurl="file://C:\Users\sandesh\AndroidStudioProjects\Emergency_Responder\IOT_Responder.iml" filepath="C:\Users\sandesh\AndroidStudioProjects\Emergency_Responder\IOT_Responder.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\sandesh\AndroidStudioProjects\Emergency_Responder\app\app.iml" filepath="C:\Users\sandesh\AndroidStudioProjects\Emergency_Responder\app\app.iml" />
     </modules>
   </component>
 </project>

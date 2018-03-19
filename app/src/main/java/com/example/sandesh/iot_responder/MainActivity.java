@@ -10,11 +10,14 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import static java.lang.Thread.sleep;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener{
 
@@ -29,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
-        sensAccelerometer=sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        sensAccelerometer=sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         sensorManager.registerListener(this,sensAccelerometer,sensorManager.SENSOR_DELAY_NORMAL);
         edit_x=(EditText) findViewById(R.id.editText1);
         edit_y=(EditText) findViewById(R.id.editText2);
@@ -41,16 +44,38 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent event){
         Sensor mysensor=event.sensor;
-        if(mysensor.getType()==Sensor.TYPE_ACCELEROMETER){
-            float x=event.values[0];
-            float y=event.values[1];
-            float z=event.values[2];
-            edit_x.setText(Float.toString(x));
-            edit_y.setText(Float.toString(y));
-            edit_z.setText(Float.toString(z));
-            edit_lin_x.setText(Float.toString(x));
-            edit_lin_y.setText(Float.toString(y));
-            edit_lin_z.setText(Float.toString(z));
+        if(mysensor.getType()==Sensor.TYPE_LINEAR_ACCELERATION){
+            final float alpha=2/10;
+            float[] gravity=new float[3];
+            float[] linear_acceleration=new float[3];
+            for(int i=0;i<linear_acceleration.length;i++){
+                linear_acceleration[i]=0;
+                gravity[i]=0;
+            }
+            // Isolate the force of gravity with the low-pass filter.
+            gravity[0] = alpha * gravity[0] + (1 - alpha) * event.values[0];
+            gravity[1] = alpha * gravity[1] + (1 - alpha) * event.values[1];
+            gravity[2] = alpha * gravity[2] + (1 - alpha) * event.values[2];
+            for(int i=0;i<gravity.length;i++){
+                Log.d("Sensor","Gravity["+i+":]"+gravity[i]);
+            }
+            for(int i=0;i<3;i++){
+                Log.d("Sensor","event["+i+":]"+event.values[i]);
+            }
+            // Remove the gravity contribution with the high-pass filter.
+            linear_acceleration[0] = event.values[0] - gravity[0];
+            linear_acceleration[1] = event.values[1] - gravity[1];
+            linear_acceleration[2] = event.values[2] - gravity[2];
+            for(int i=0;i<linear_acceleration.length;i++){
+                Log.d("Sensor","Linear["+i+":]"+linear_acceleration[i]);
+            }
+
+            edit_x.setText(Float.toString(event.values[0]));
+            edit_y.setText(Float.toString(event.values[0]));
+            edit_z.setText(Float.toString(event.values[0]));
+            edit_lin_x.setText(Float.toString(linear_acceleration[0]));
+            edit_lin_y.setText(Float.toString(linear_acceleration[1]));
+            edit_lin_z.setText(Float.toString(linear_acceleration[2]));
         }
     }
 
