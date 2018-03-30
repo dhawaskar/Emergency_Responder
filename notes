@@ -1,0 +1,5 @@
+Add following lines in dependencies section in build.gradle(Modular app)
+    compile 'com.google.android.gms:play-services:12.0.1'
+    compile 'com.google.android.gms:play-services-location:12.0.0'
+    compile 'com.google.android.gms:play-services-maps:12.0.0'
+    compile 'com.google.maps.android:android-maps-utils:0.5'
